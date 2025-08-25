@@ -8,7 +8,6 @@ import { AuthGuard } from "@/components/auth-guard"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Toaster } from "@/components/toaster"
 
-// Sidebar (ajustá imports si tus rutas cambian)
 import {
   SidebarProvider,
   SidebarInset,
@@ -31,7 +30,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     pathname.startsWith("/_next") ||
     pathname.startsWith("/api/")
 
-  // Layout público simple (login, assets, APIs)
+  // Shell público: se usa para /login y assets públicos
   const PublicShell = (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
       {children}
@@ -39,7 +38,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     </ThemeProvider>
   )
 
-  // Layout privado con Sidebar + Guard
+  // Shell privado: **única** sidebar global (AppSidebar)
   const PrivateShell = (
     <AuthGuard>
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
@@ -51,6 +50,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <SidebarTrigger />
                 <h1 className="text-lg font-semibold">Coww</h1>
               </header>
+              {/* Área de contenido principal para tus páginas */}
               <main className="p-4">{children}</main>
             </SidebarInset>
           </div>
