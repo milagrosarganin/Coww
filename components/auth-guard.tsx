@@ -17,14 +17,14 @@ export function AuthGuard({ children }: AuthGuardProps) {
   const pathname = usePathname()
 
   useEffect(() => {
-    if (!loading) {
-      if (!user && pathname !== "/login") {
-        router.push("/login")
-      } else if (user && pathname === "/login") {
-        router.push("/")
-      }
+  if (!loading) {
+    if (!user && pathname !== "/login") {
+      router.replace("/login")
+    } else if (user && pathname === "/login") {
+      router.replace("/")
     }
-  }, [user, loading, router, pathname])
+  }
+}, [user, loading, router, pathname])
 
   if (loading) {
     return (

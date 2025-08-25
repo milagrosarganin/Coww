@@ -1,28 +1,29 @@
+"use client"
+
 import type React from "react"
-import type { Metadata } from "next"
-import { Inter } from "next/font/google"
 import "./globals.css"
-import { ThemeProvider } from "@/components/theme-provider"
-import { Toaster } from "@/components/toaster"
+import { usePathname } from "next/navigation"
 import { AuthGuard } from "@/components/auth-guard"
-import { SidebarProvider, SidebarInset, SidebarTrigger } from "@/components/ui/sidebar"
-import AppSidebar from "@/components/app-sidebar"
 
+const PUBLIC_PATHS = new Set([
+  "/login",
+  "/favicon.ico",
+  "/robots.txt",
+  "/sitemap.xml",
+])
 
-const inter = Inter({ subsets: ["latin"] })
-
-export const metadata: Metadata = {
-  title: "Coww",
-  description: "Sistema de gestión",
-}
-
-
-// app/layout.tsx (versión simple)
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname()
+  const isPublic =
+    PUBLIC_PATHS.has(pathname) ||
+    pathname.startsWith("/_next") ||
+    pathname.startsWith("/api/")
+
   return (
     <html lang="es">
-      <body>{children}</body>
+      <body>
+        {isPublic ? children : <AuthGuard>{children}</AuthGuard>}
+      </body>
     </html>
   )
 }
-
